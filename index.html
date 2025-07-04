@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>魔法童話夢工廠 - 互動式睡前故事</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6a4c93; /* 深紫羅蘭 */
+            --secondary: #8a5a44; /* 棕色 */
+            --accent: #f8bbd0; /* 淺粉紅 */
+            --bg: #fff9f4; /* 淺米白 */
+            --gold: #f9d71c; /* 金色 */
+            --family: #e74c3c; /* 家庭溫馨紅 */
+            --elderly: #3498db; /* 老奶奶藍 */
+            --friday: #2ecc71; /* 快樂周五綠 */
+        }
+        
+        body {
+            font-family: 'Inter', 'Ma Shan Zheng', sans-serif;
+            background-color: var(--bg);
+            color: #333;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><path fill="%23f8bbd044" d="M50,50 C60,30 80,20 100,30 C120,20 140,30 150,50 C170,60 180,80 170,100 C180,120 170,140 150,150 C140,170 120,180 100,170 C80,180 60,170 50,150 C30,140 20,120 30,100 C20,80 30,60 50,50 Z"></path></svg>');
+            background-size: 200px;
+            background-position: 0 0;
+            animation: bgMove 30s linear infinite;
+        }
+        
+        @keyframes bgMove {
+            0% { background-position: 0 0; }
+            100% { background-position: 200px 200px; }
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), #8e6c88);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header-stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+        
+        @keyframes twinkle {
+            0% { opacity: 0.2; }
+            50% { opacity: 1; }
+            100% { opacity: 0.2; }
+        }
+        
+        .nav {
+            display: flex;
+            justify-content: center;
+            background: var(--secondary);
+            padding: 10px;
+            flex-wrap: wrap;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            position: relative;
+        }
+        
+        .nav::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            pointer-events: none;
+        }
+        
+        .nav button {
+            margin: 5px;
+            background: var(--accent);
+            color: #333;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .nav button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: all 0.6s;
+            z-index: -1;
+        }
+        
+        .nav button:hover {
+            background-color: #f4a2b9;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+        }
+        
+        .nav button:hover::before {
+            left: 100%;
+        }
+
+        .nav button.active {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .nav button.family-btn {
+            background-color: var(--family);
+            color: white;
+        }
+        
+        .nav button.elderly-btn {
+            background-color: var(--elderly);
+            color: white;
+        }
+        
+        .nav button.friday-btn {
+            background-color: var(--friday);
+            color: white;
+        }
+        
+        .nav button.family-btn:hover {
+            background-color: #c0392b;
+        }
+        
+        .nav button.elderly-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .nav button.friday-btn:hover {
+            background-color: #27ae60;
+        }
+        
+        main {
+            flex-grow: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 900px;
+            margin: 20px auto;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        main::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="10" cy="10" r="1" fill="%23f8bbd022" /><circle cx="30" cy="25" r="0.8" fill="%23f8bbd022" /><circle cx="50" cy="15" r="1.2" fill="%23f8bbd022" /><circle cx="70" cy="30" r="0.7" fill="%23f8bbd022" /><circle cx="90" cy="20" r="0.9" fill="%23f8bbd022" /></svg>');
+            z-index: 0;
+        }
+        
+        .story-section {
+            display: none;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+            position: relative;
+            z-index: 1;
+        }
+
+        .story-section.active {
+            display: block;
+            animation: fadeIn 0.8s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .story-header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .story-header h2 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            color: var(--primary);
+            position: relative;
+            display: inline-block;
+            padding: 0 20px;
+        }
+        
+        .family-story .story-header h2 {
+            color: var(--family);
+        }
+        
+        .elderly-story .story-header h2 {
+            color: var(--elderly);
+        }
+        
+        .friday-story .story-header h2 {
+            color: var(--friday);
+        }
+        
+        .story-header h2::before,
+        .story-header h2::after {
+            content: '✦';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gold);
+        }
+        
+        .story-header h2::before {
+            left: 0;
+        }
+        
+        .story-header h2::after {
+            right: 0;
+        }
+        
+        .story-image-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto 20px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            transition: all 0.4s ease;
+        }
+        
+        .story-image-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        
+        .story-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+        
+        .story-image-container:hover .story-image {
+            transform: scale(1.03);
+        }
+        
+        /* 播放控制按鈕位置優化 */
+        .image-controls {
+            margin: 15px auto 25px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            width: 100%;
+            max-width: 600px;
+        }
+        
+        .image-controls button {
+            background: linear-gradient(to bottom, var(--primary), #5a3c83);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .image-controls button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: all 0.6s;
+        }
+        
+        .image-controls button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(0,0,0,0.25);
+        }
+        
+        .image-controls button:hover::before {
+            left: 100%;
+        }
+        
+        .image-controls button i {
+            font-size: 1.1rem;
+        }
+        
+        .story-content {
+            margin-top: 20px;
+            text-align: justify;
+            line-height: 1.8;
+            font-size: 1.15rem;
+            color: #555;
+            padding: 0 10px;
+        }
+        
+        .story-content p {
+            margin-bottom: 1.5em;
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        .story-content p::before {
+            content: '❧';
+            position: absolute;
+            left: 0;
+            top: 5px;
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+        
+        .character-dialogue {
+            margin: 25px 0;
+            padding: 20px;
+            background: linear-gradient(to right, #f8f0f4, #fef9fb);
+            border-left: 5px solid var(--accent);
+            border-radius: 10px;
+            font-style: italic;
+            color: #666;
+            position: relative;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            transform-origin: left center;
+        }
+        
+        .character-dialogue:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .character-dialogue::before {
+            content: '"';
+            position: absolute;
+            top: 5px;
+            left: 10px;
+            font-size: 3rem;
+            color: rgba(248, 187, 208, 0.3);
+            font-family: serif;
+            line-height: 1;
+        }
+        
+        .character-dialogue p {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .controls {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .controls button {
+            background: linear-gradient(to bottom, var(--primary), #5a3c83);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .controls button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: all 0.6s;
+        }
+        
+        .controls button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(0,0,0,0.25);
+        }
+        
+        .controls button:hover::before {
+            left: 100%;
+        }
+        
+        .controls button i {
+            font-size: 1.2rem;
+        }
+        
+        .family-btn {
+            background: linear-gradient(to bottom, var(--family), #c0392b) !important;
+        }
+        
+        .elderly-btn {
+            background: linear-gradient(to bottom, var(--elderly), #2980b9) !important;
+        }
+        
+        .friday-btn {
+            background: linear-gradient(to bottom, var(--friday), #27ae60) !important;
+        }
+        
+        .family-btn:hover {
+            background: linear-gradient(to bottom, #c0392b, #a5271a) !important;
+        }
+        
+        .elderly-btn:hover {
+            background: linear-gradient(to bottom, #2980b9, #1c6ea4) !important;
+        }
+        
+        .friday-btn:hover {
+            background: linear-gradient(to bottom, #27ae60, #219653) !important;
+        }
+        
+        .message-box {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+            z-index: 1000;
+            display: none;
+            text-align: center;
+            max-width: 90%;
+            width: 400px;
+            border: 3px solid var(--accent);
+            animation: popIn 0.4s ease;
+        }
+        
+        @keyframes popIn {
+            0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+        
+        .message-box p {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            color: #555;
+        }
+        
+        .message-box button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .message-box button:hover {
+            background: #5a3c83;
+            transform: translateY(-2px);
+        }
+        
+        .floating-animals {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 15px;
+            z-index: 100;
+        }
+        
+        .floating-animal {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            animation: float 6s ease-in-out infinite;
+            cursor: pointer;
+            font-size: 2rem;
+        }
+        
+        .floating-animal:nth-child(1) { animation-delay: 0s; }
+        .floating-animal:nth-child(2) { animation-delay: 2s; }
+        .floating-animal:nth-child(3) { animation-delay: 4s; }
+        .floating-animal:nth-child(4) { 
+            animation-delay: 1s; 
+            background-color: #f8bbd0;
+        }
+        .floating-animal:nth-child(5) { 
+            animation-delay: 3s; 
+            background-color: #d6eaf8;
+        }
+        .floating-animal:nth-child(6) { 
+            animation-delay: 5s; 
+            background-color: #d5f5e3;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .music-control {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+        
+        .music-control:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+        }
+        
+        .page-turn {
+            position: fixed;
+            top: 50%;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            z-index: 90;
+            font-size: 1.5rem;
+            color: var(--primary);
+            transform: translateY(-50%);
+            transition: all 0.3s ease;
+        }
+        
+        .page-turn:hover {
+            background: white;
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .prev-page {
+            left: 20px;
+        }
+        
+        .next-page {
+            right: 20px;
+        }
+        
+        /* 影片播放器樣式 */
+        .video-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            background: #000;
+        }
+        
+        .video-container iframe {
+            width: 100%;
+            height: 450px;
+            border: none;
+            display: block;
+        }
+        
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(231, 76, 60, 0.1), rgba(142, 68, 173, 0.2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .video-container:hover .video-overlay {
+            opacity: 1;
+        }
+        
+        .play-icon {
+            font-size: 5rem;
+            color: white;
+            text-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+        
+        .video-description {
+            margin-top: 20px;
+            padding: 20px;
+            background: linear-gradient(to right, #f9f2f4, #fef9fb);
+            border-radius: 10px;
+            border-left: 5px solid;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .family-story .video-description {
+            border-left-color: var(--family);
+        }
+        
+        .elderly-story .video-description {
+            border-left-color: var(--elderly);
+        }
+        
+        .friday-story .video-description {
+            border-left-color: var(--friday);
+        }
+        
+        .video-description h3 {
+            margin-top: 0;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .family-story .video-description h3 {
+            color: var(--family);
+        }
+        
+        .elderly-story .video-description h3 {
+            color: var(--elderly);
+        }
+        
+        .friday-story .video-description h3 {
+            color: var(--friday);
+        }
+        
+        .family-icon {
+            display: inline-flex;
+            background: var(--family);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .elderly-icon {
+            display: inline-flex;
+            background: var(--elderly);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .friday-icon {
+            display: inline-flex;
+            background: var(--friday);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .nav {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav button {
+                width: 90%;
+                margin: 5px 0;
+            }
+            
+            .controls, .image-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .controls button, .image-controls button {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .page-turn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+            
+            .video-container iframe {
+                height: 250px;
+            }
+            
+            .floating-animals {
+                bottom: 10px;
+                right: 10px;
+                gap: 8px;
+            }
+            
+            .floating-animal {
+                width: 45px;
+                height: 45px;
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="music-control">
+        <i class="fas fa-music"></i>
+    </div>
+    
+    <div class="page-turn prev-page">
+        <i class="fas fa-chevron-left"></i>
+    </div>
+    
+    <div class="page-turn next-page">
+        <i class="fas fa-chevron-right"></i>
+    </div>
+    
+    <div class="floating-animals">
+        <div class="floating-animal">🦊</div>
+        <div class="floating-animal">🐑</div>
+        <div class="floating-animal">🦄</div>
+        <div class="floating-animal">👵👦</div>
+        <div class="floating-animal">👵</div>
+        <div class="floating-animal">🎉</div>
+    </div>
+
+    <header>
+        <div class="header-stars" id="stars-container"></div>
+        <h1 class="text-4xl font-bold">魔法童話夢工廠</h1>
+        <p class="text-xl mt-2">您的專屬互動式睡前故事</p>
+    </header>
+
+    <nav class="nav">
+        <button id="story1-btn" onclick="showStory('story1', 'forest')" class="active">
+            <i class="fas fa-paw"></i> 月光森林的小狐狸
+        </button>
+        <button id="story2-btn" onclick="showStory('story2', 'cloud')">
+            <i class="fas fa-cloud"></i> 雲朵上的小綿羊
+        </button>
+        <button id="story3-btn" onclick="showStory('story3', 'forest')">
+            <i class="fas fa-star"></i> 星星湖畔的獨角獸
+        </button>
+        <button id="family-btn" onclick="showStory('family', 'family')" class="family-btn">
+            <i class="fas fa-heart"></i> 祖孫情動漫
+        </button>
+        <button id="elderly-btn" onclick="showStory('elderly', 'elderly')" class="elderly-btn">
+            <i class="fas fa-scroll"></i> 老奶奶動漫
+        </button>
+        <button id="friday-btn" onclick="showStory('friday', 'friday')" class="friday-btn">
+            <i class="fas fa-glass-cheers"></i> 快樂周五動漫
+        </button>
+    </nav>
+
+    <main>
+        <div id="story1" class="story-section active">
+            <div class="story-header">
+                <h2>月光森林的小狐狸</h2>
+            </div>
+            <div class="story-image-container">
+                <img src="https://ping763573.github.io/moonlight-fox/月光.png" alt="月光森林的小狐狸" class="story-image">
+            </div>
+            <div class="image-controls">
+                <button onclick="playStory('moonlightFox')">
+                    <i class="fas fa-play"></i> 播放故事
+                </button>
+                <!-- 暫停按鈕已刪除 -->
+                <button onclick="stopStory()">
+                    <i class="fas fa-stop"></i> 停止 
+                </button>
+            </div>
+            <div class="story-content">
+                <p>在一個月光皎潔的夜晚，月光森林裡住著一隻名叫莉莉的小狐狸。莉莉有一雙閃亮的眼睛和一條蓬鬆的尾巴。她最喜歡的事情，就是在月光下追逐螢火蟲，並聆聽森林裡的蟲鳴鳥叫。</p>
+                <p>有一天，莉莉發現森林深處有一道神秘的光芒。好奇心驅使著她，她決定跟隨那道光芒，展開一場奇妙的冒險。她穿過高大的樹木，越過清澈的小溪，光芒越來越亮，也越來越近。</p>
+                <div class="character-dialogue">
+                    <p>「這是什麼呢？」莉莉輕聲自語，心裡充滿了期待。</p>
+                </div>
+                <p>最終，她來到了一片開闊的空地，那裡有一棵巨大的古樹，樹上掛滿了閃閃發光的月光果實。這些果實散發著溫暖的光芒，照亮了整個空地。莉莉從未見過如此美麗的景象。</p>
+                <p>突然，一隻年邁的貓頭鷹飛了過來，牠的羽毛像夜空一樣深邃。「小狐狸，妳是第一個找到月光古樹的生物。」貓頭鷹緩緩地說，「這些月光果實蘊含著森林的智慧和夢想。妳可以摘取一顆，它會實現妳最真誠的願望。」</p>
+                <div class="character-dialogue">
+                    <p>貓頭鷹：「選擇妳最渴望的願望吧，小狐狸。」</p>
+                </div>
+                <p>莉莉閉上眼睛，她想到了森林裡那些需要幫助的小動物，想到了讓森林永遠充滿歡聲笑語。她輕輕摘下了一顆月光果實，許下了願望：「我希望月光森林永遠和平、充滿愛，所有的動物都能幸福快樂。」</p>
+                <p>月光果實發出耀眼的光芒，隨後化作無數細小的光點，灑落在森林的每一個角落。從那天起，月光森林變得更加美麗和諧，動物們互助友愛，每一天都充滿了歡樂。</p>
+                <p>莉莉成為了月光森林的守護者，她知道，真正的魔法不是來自於果實，而是來自於心中無私的愛和善良。在每一個月光皎潔的夜晚，她依然會追逐螢火蟲，但她的心裡，卻多了一份守護森林的責任和溫暖。</p>
+            </div>
+        </div>
+
+        <div id="story2" class="story-section">
+            <div class="story-header">
+                <h2>雲朵上的小綿羊</h2>
+            </div>
+            <div class="story-image-container">
+                <img src="https://ping763573.github.io/moonlight-fox/朵朵.png" alt="雲朵上的小綿羊" class="story-image">
+            </div>
+            <div class="image-controls">
+                <button onclick="playStory('cloudSheep')">
+                    <i class="fas fa-play"></i> 播放故事
+                </button>
+                <!-- 暫停按鈕已刪除 -->
+                <button onclick="stopStory()">
+                    <i class="fas fa-stop"></i> 停止
+                </button>
+            </div>
+            <div class="story-content">
+                <p>在遙遠的天空中，有一片柔軟的雲朵，上面住著一群快樂的小綿羊。其中有一隻特別的小綿羊，牠的名字叫朵朵。朵朵的羊毛比其他綿羊都還要潔白，像剛下的雪一樣。</p>
+                <p>朵朵最喜歡的事情，就是躺在雲朵上，看著下面的世界。她常常想，地面上的世界是什麼樣子的呢？是不是也像雲朵一樣柔軟，還是有著許多新奇的事物？</p>
+                <div class="character-dialogue">
+                    <p>「地面上一定有很多好玩的地方！」朵朵對著天空說。</p>
+                </div>
+                <p>有一天，一陣微風吹過，朵朵不小心從雲朵上滑了下來。她沒有害怕，反而覺得這是一個探索地面的好機會。她輕輕地落到了一片綠色的草地上，那裡開滿了五顏六色的花朵。</p>
+                <p>朵朵遇到了一隻小兔子，小兔子正在採集漿果。「你好，小綿羊！」小兔子熱情地打招呼，「妳是從哪裡來的呀？我從沒見過像妳這麼白的綿羊！」</p>
+                <div class="character-dialogue">
+                    <p>小兔子：「妳的羊毛真漂亮！是從天上來的嗎？」</p>
+                </div>
+                <p>朵朵告訴小兔子她來自雲朵上的故事，小兔子聽得津津有味。小兔子帶著朵朵參觀了森林，認識了小松鼠、小鳥和許多其他可愛的動物。朵朵發現地面上的世界充滿了生機和友誼。</p>
+                <p>當太陽下山時，朵朵感到了一絲不捨。小兔子說：「別擔心，朵朵。妳可以隨時回來玩。而且，當妳想念我們的時候，只要抬頭看看天空，我們就會在雲朵上向妳揮手。」</p>
+                <p>朵朵回到了雲朵上，她的心裡充滿了快樂和溫暖。她知道，無論是在天空還是地面，都有著美好的事物和真摯的友誼。從那天起，朵朵不僅喜歡看著下面的世界，更期待著下一次的地面之旅。</p>
+            </div>
+        </div>
+
+        <div id="story3" class="story-section">
+            <div class="story-header">
+                <h2>星星湖畔的獨角獸</h2>
+            </div>
+            <div class="story-image-container">
+                <img src="https://ping763573.github.io/moonlight-fox/獨角.png" alt="星星湖畔的獨角獸" class="story-image">
+            </div>
+            <div class="image-controls">
+                <button onclick="playStory('starUnicorn')">
+                    <i class="fas fa-play"></i> 播放故事
+                </button>
+                <!-- 暫停按鈕已刪除 -->
+                <button onclick="stopStory()">
+                    <i class="fas fa-stop"></i> 停止
+                </button>
+            </div>
+            <div class="story-content">
+                <p>在一個被星光環繞的湖畔，住著一隻名叫星光（Sparkle）的獨角獸。星光的鬃毛閃爍著七彩的光芒，牠的角像水晶一樣透明。每天晚上，星光都會來到湖邊，欣賞湖面倒映的點點星光。</p>
+                <p>星光有一個秘密，牠的角能夠吸收星辰的力量，治癒世間萬物的傷痛。但是，使用這種力量需要消耗大量的星光能量，所以星光很少使用牠的角。</p>
+                <div class="character-dialogue">
+                    <p>「今晚的星光真美啊，希望大家都能健康快樂。」星光輕聲祈禱。</p>
+                </div>
+                <p>有一天，森林裡爆發了一場奇怪的疾病，許多小動物都生病了，連最活潑的松鼠也變得無精打采。森林裡的精靈們非常焦急，他們知道只有星光獨角獸才能幫助他們。</p>
+                <p>精靈女王找到了星光，向牠講述了森林的困境。「星光，我們需要妳的幫助。只有妳的角能治癒這場疾病。」女王懇求道。</p>
+                <div class="character-dialogue">
+                    <p>精靈女王：「森林的命運，現在掌握在妳手中。」</p>
+                </div>
+                <p>星光毫不猶豫地答應了。牠來到生病的動物們身邊，開始吸收湖面上的星光。隨著星光能量的匯聚，星光的角發出了越來越耀眼的光芒。牠將角輕輕地觸碰每一隻生病的動物，光芒所到之處，動物們的病痛立刻消失了，牠們重新恢復了活力。</p>
+                <p>雖然這次治療讓星光耗盡了所有的星光能量，但看到動物們重新歡快地奔跑，星光的心裡充滿了喜悅。精靈女王和所有的動物都向星光表達了最誠摯的感謝。</p>
+                <p>從那天起，星光獨角獸的故事在森林裡傳頌開來。牠不僅是星星湖畔的守護者，更是森林裡所有生命的希望。每當夜幕降臨，星光都會來到湖邊，靜靜地等待著，等待著下一次為森林帶來光明和希望的機會。</p>
+            </div>
+        </div>
+        
+        <!-- 祖孫情動漫部分 -->
+        <div id="family" class="story-section family-story">
+            <div class="story-header">
+                <h2>祖孫情動漫</h2>
+            </div>
+            
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/1928Ws8s5QI?autoplay=0&modestbranding=1&rel=0" 
+                        title="祖孫情動漫" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                </iframe>
+                <div class="video-overlay" onclick="playFamilyVideo()">
+                    <div class="play-icon">
+                        <i class="fas fa-play-circle"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="video-description">
+                <h3><span class="family-icon"><i class="fas fa-heart"></i></span> 溫馨祖孫情</h3>
+                <p>這部動畫短片講述了一個溫暖人心的祖孫故事。在一個寧靜的小村莊裡，年邁的奶奶和她活潑可愛的孫子共同生活的點點滴滴。從一起做家務、講故事，到共同面對生活中的挑戰，影片生動展現了祖孫之間無條件的愛與支持。</p>
+                <p>影片特別適合家庭觀賞，能夠喚起觀眾對家庭溫暖的回憶，並提醒我們珍惜與長輩相處的每一刻。這部動畫不僅是給孩子的故事，也是給所有年齡層觀眾的溫馨禮物。</p>
+            </div>
+            
+            <div class="controls">
+                <button onclick="playFamilyVideo()" class="family-btn">
+                    <i class="fas fa-play"></i> 播放動漫
+                </button>
+                <!-- 暫停按鈕已刪除 -->
+                <button onclick="stopFamilyVideo()">
+                    <i class="fas fa-stop"></i> 停止
+                </button>
+            </div>
+        </div>
+        
+        <!-- 老奶奶動漫部分 -->
+        <div id="elderly" class="story-section elderly-story">
+            <div class="story-header">
+                <h2>老奶奶動漫</h2>
+            </div>
+            
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/Iaa_r0XJ0Eo?autoplay=0&modestbranding=1&rel=0" 
+                        title="老奶奶動漫" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                </iframe>
+                <div class="video-overlay" onclick="playElderlyVideo()">
+                    <div class="play-icon">
+                        <i class="fas fa-play-circle"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="video-description">
+                <h3><span class="elderly-icon"><i class="fas fa-book"></i></span> 老奶奶的智慧故事</h3>
+                <p>這部動畫講述了一位充滿智慧的老奶奶的故事。在一個寧靜的村莊裡，老奶奶用她一生的經驗和智慧幫助村民解決各種難題。從調解鄰里糾紛，到教導孩子們生活道理，再到分享她年輕時的冒險故事。</p>
+                <p>影片展現了長輩的智慧與慈愛，強調了代際之間的知識傳遞和尊重。老奶奶的故事不僅充滿了溫暖和智慧，還教導我們珍視長輩的經驗和教誨。這部動畫適合所有年齡層觀看，尤其適合家庭共同欣賞。</p>
+            </div>
+            
+            <div class="controls">
+                <button onclick="playElderlyVideo()" class="elderly-btn">
+                    <i class="fas fa-play"></i> 播放動漫
+                </button>
+                <!-- 暫停按鈕已刪除 -->
+                <button onclick="stopElderlyVideo()">
+                    <i class="fas fa-stop"></i> 停止
+                </button>
+            </div>
+        </div>
+        
+        <!-- 快樂周五動漫部分 -->
+        <div id="friday" class="story-section friday-story">
+            <div class="story-header">
+                <h2>快樂周五動漫</h2>
+            </div>
+            
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/J6N9IstFHiw?autoplay=0&modestbranding=1&rel=0" 
+                        title="快樂周五動漫" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                </iframe>
+                <div class="video-overlay" onclick="playFridayVideo()">
+                    <div class="play-icon">
+                        <i class="fas fa-play-circle"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="video-description">
+                <h3><span class="friday-icon"><i class="fas fa-glass-cheers"></i></span> 周五歡樂時光</h3>
+                <p>這部充滿活力的動畫短片捕捉了周五的歡樂氛圍！當一周的工作和學習結束，周五的夜晚總是充滿期待和興奮。影片展現了朋友們聚會、家庭歡聚、戶外活動等各種慶祝周五的方式。</p>
+                <p>無論是和朋友一起跳舞、享用美食，還是和家人共度溫馨時光，周五的魔力在於它帶來的放鬆和快樂。這部動畫將帶您進入一個充滿歡笑和活力的周五世界，讓您感受到周末來臨的喜悅！</p>
+            </div>
+            
+            <div class="controls">
+                <button onclick="playFridayVideo()" class="friday-btn">
+                    <i class="fas fa-play"></i> 播放動漫
+                </button>
+                <!-- 暫停按鈕已刪除 -->
+                <button onclick="stopFridayVideo()">
+                    <i class="fas fa-stop"></i> 停止
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <div id="messageBox" class="message-box">
+        <p id="messageText"></p>
+        <button onclick="hideMessageBox()">確定</button>
+    </div>
+
+    <script>
+        // 創建動態星星背景
+        function createStars() {
+            const container = document.getElementById('stars-container');
+            const starCount = 50;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                // 隨機位置
+                const top = Math.random() * 100;
+                const left = Math.random() * 100;
+                star.style.top = `${top}%`;
+                star.style.left = `${left}%`;
+                
+                // 隨機大小
+                const size = Math.random() * 3 + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                
+                // 隨機動畫延遲
+                const delay = Math.random() * 3;
+                star.style.animationDelay = `${delay}s`;
+                
+                container.appendChild(star);
+            }
+        }
+        
+        // 全局變量
+        let currentStoryId = 'story1';
+        let storyAudios = {};
+        let characterAudios = {};
+        let currentAmbience = null;
+        let isMusicPlaying = false;
+        let currentPlayingVideo = null; // 追蹤當前播放的影片
+
+        // 顯示訊息框
+        function showMessageBox(message) {
+            const messageBox = document.getElementById('messageBox');
+            const messageText = document.getElementById('messageText');
+            messageText.textContent = message;
+            messageBox.style.display = 'block';
+        }
+
+        // 隱藏訊息框
+        function hideMessageBox() {
+            const messageBox = document.getElementById('messageBox');
+            messageBox.style.display = 'none';
+        }
+
+        // 初始化音訊
+        function initAudio() {
+            // 月光森林的小狐狸
+            storyAudios['moonlightFox'] = new Audio('https://ping763573.github.io/moonlight-fox/%E6%9C%88%E5%85%89%E6%A3%AE%E6%9E%97%E7%9A%84%E5%B0%8F%E7%8B%90%E7%8B%B8(ge).mp3'); 
+            // 雲朵上的小綿羊
+            storyAudios['cloudSheep'] = new Audio('https://ping763573.github.io/moonlight-fox/%E9%9B%B2%E6%9C%B5.mp3');
+            // 星星湖畔的獨角獸
+            storyAudios['starUnicorn'] = new Audio('https://ping763573.github.io/moonlight-fox/%E6%98%9F%E5%85%89.mp3');
+
+            // 設置音量
+            Object.values(storyAudios).forEach(audio => {
+                audio.volume = 0.7;
+            });
+        }
+
+        // 播放故事音訊
+        function playStory(storyKey) {
+            stopAllAudio();
+            if (storyAudios[storyKey]) {
+                storyAudios[storyKey].play().catch(error => {
+                    console.log("故事音訊播放錯誤:", error);
+                    showMessageBox("無法播放故事音訊，請檢查瀏覽器是否允許音訊播放。");
+                });
+            } else {
+                showMessageBox("未找到指定的故事音訊。");
+            }
+        }
+
+        // 暫停故事音訊 (此函數已不再被任何按鈕調用，但保留以防其他功能需要)
+        function pauseStory() {
+            Object.values(storyAudios).forEach(audio => audio.pause());
+        }
+
+        // 停止故事音訊
+        function stopStory() {
+            Object.values(storyAudios).forEach(audio => {
+                audio.pause();
+                audio.currentTime = 0;
+            });
+            stopAmbience();
+        }
+
+        // 顯示指定的故事區塊
+        function showStory(storyId, ambienceType) {
+            // 如果切換故事時有影片正在播放，暫停它
+            if (currentPlayingVideo) {
+                stopVideo(currentPlayingVideo);
+                currentPlayingVideo = null;
+            }
+            
+            // 隱藏所有故事區塊
+            document.querySelectorAll('.story-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // 顯示目標故事區塊
+            document.getElementById(storyId).classList.add('active');
+            currentStoryId = storyId;
+            
+            stopAllAudio();
+            playAmbience(ambienceType);
+
+            // 更新導航按鈕的激活狀態
+            document.querySelectorAll('.nav button').forEach(button => {
+                button.classList.remove('active');
+            });
+            document.getElementById(storyId + '-btn').classList.add('active');
+        }
+
+        // 環境音效
+        const ambience = new Audio();
+        function playAmbience(type) {
+            stopAmbience();
+            
+            switch(type) {
+                case "forest":
+                    ambience.src = "https://www.soundjay.com/nature/sounds/forest-01.mp3";
+                    break;
+                case "cloud":
+                    ambience.src = "https://www.soundjay.com/mechanical/sounds/wind-chime-01.mp3";
+                    break;
+                case "family":
+                    ambience.src = "https://www.soundjay.com/misc/sounds/wind-chime-02.mp3";
+                    break;
+                case "elderly":
+                    ambience.src = "https://www.soundjay.com/misc/sounds/wind-chime-03.mp3";
+                    break;
+                case "friday":
+                    ambience.src = "https://www.soundjay.com/misc/sounds/party-01.mp3";
+                    break;
+                default:
+                    return;
+            }
+            
+            ambience.loop = true;
+            ambience.volume = 0.3;
+            ambience.play().catch(error => {
+                console.log("環境音效播放錯誤:", error);
+            });
+            currentAmbience = type;
+        }
+        
+        function stopAmbience() {
+            ambience.pause();
+            ambience.currentTime = 0;
+            currentAmbience = null;
+        }
+        
+        // 停止所有音頻
+        function stopAllAudio() {
+            Object.values(storyAudios).forEach(audio => {
+                audio.pause();
+                audio.currentTime = 0;
+            });
+            
+            stopAmbience();
+            
+            document.querySelectorAll('audio').forEach(audio => {
+                if(!Object.values(storyAudios).includes(audio) && audio !== ambience) {
+                    audio.pause();
+                    audio.currentTime = 0;
+                }
+            });
+        }
+        
+        // 通用影片停止函數
+        function stopVideo(iframe) {
+            const videoUrl = iframe.src;
+            // 重置為不自動播放的版本
+            iframe.src = videoUrl.replace('autoplay=1', 'autoplay=0');
+        }
+        
+        // 祖孫情動漫控制函數
+        function playFamilyVideo() {
+            const iframe = document.querySelector('#family .video-container iframe');
+            const videoUrl = iframe.src;
+            
+            // 停止其他影片
+            if (currentPlayingVideo && currentPlayingVideo !== iframe) {
+                stopVideo(currentPlayingVideo);
+            }
+            
+            // 啟用自動播放
+            iframe.src = videoUrl.replace('autoplay=0', 'autoplay=1');
+            
+            // 播放溫馨家庭背景音樂
+            playAmbience('family');
+            
+            // 設置當前播放影片
+            currentPlayingVideo = iframe;
+        }
+        
+        // 暫停祖孫情動漫 (此函數已不再被任何按鈕調用，但保留以防其他功能需要)
+        function pauseFamilyVideo() {
+            const iframe = document.querySelector('#family .video-container iframe');
+            const videoUrl = iframe.src;
+            
+            // 暫停影片
+            iframe.src = videoUrl.replace('autoplay=1', 'autoplay=0');
+            
+            // 暫停背景音樂
+            ambience.pause();
+            
+            // 清除當前播放影片
+            if (currentPlayingVideo === iframe) {
+                currentPlayingVideo = null;
+            }
+        }
+        
+        function stopFamilyVideo() {
+            const iframe = document.querySelector('#family .video-container iframe');
+            const videoUrl = iframe.src;
+            
+            // 停止影片
+            iframe.src = videoUrl.replace('autoplay=1', 'autoplay=0');
+            
+            // 停止背景音樂
+            stopAmbience();
+            
+            // 清除當前播放影片
+            if (currentPlayingVideo === iframe) {
+                currentPlayingVideo = null;
+            }
+        }
+        
+        // 老奶奶動漫控制函數
+        function playElderlyVideo() {
+            const iframe = document.querySelector('#elderly .video-container iframe');
+            const videoUrl = iframe.src;
+            
+            // 停止其他影片
+            if (currentPlayingVideo && currentPlayingVideo !== iframe) {
+                stopVideo(currentPlayingVideo);
+            }
+            
+            // 啟用自動播放
+            iframe.src = videoUrl.replace('autoplay=0', 'autoplay=1');
+            
+            // 播放溫馨背景音樂
+            playAmbience('elderly');
+            
+            // 設置當前播放影片
+            currentPlayingVideo = iframe;
+        }
+        
+        // 暫停老奶奶動漫 (此函數已不再被任何按鈕調用，但保留以防其他功能需要)
+        function pauseElderlyVideo() {
+            const iframe = document.querySelector('#elderly .video-container iframe');
+            const videoUrl = iframe.src;
+            
+            // 暫停影片
+            iframe.src = videoUrl.replace('autoplay=1', 'autoplay=0');
+            
+            // 暫停背景音樂
+            ambience.pause();
+            
+            // 清除當前播放影片
+            if (currentPlayingVideo === iframe) {
+                currentPlayingVideo = null;
+            }
+        }
+        
+        function stopElderlyVideo() {
+            const iframe = document.querySelector('#elderly .video-container iframe');
+            const videoUrl = iframe.src;
+            
+            // 停止影片
+            iframe.src = videoUrl.replace('autoplay=1', 'autoplay=0');
+            
+            // 停止背景音樂
+            stopAmbience();
+            
+            // 清除當前播放影片
+            if (currentPlayingVideo === iframe) {
+                currentPlayingVideo = null;
+            }
+        }
+        
+        // 快樂周五動漫控制函數
+        function playFridayVideo() {
+            const iframe = document.querySelector('#friday .video-container iframe');
+            const videoUrl = iframe.src;
+            
+            // 停止其他影片
+            if (currentPlayingVideo && currentPlayingVideo !== iframe) {
+                stopVideo(currentPlayingVideo);
+            }
+            
+            // 啟用自動播放
+            iframe.src = videoUrl.replace('autoplay=0', 'autoplay=1');
+            
+            // 播放快樂背景音樂
+            playAmbience('friday');
+            
+            // 設置當前播放影片
+            currentPlayingVideo = iframe;
+        }
+        
+        // 暫停快樂周五動漫 (此函數已不再被任何按鈕調用，但保留以防其他功能需要)
+        function pauseFridayVideo() {
+            const iframe = document.querySelector('#friday .video-container iframe');
+            const videoUrl = iframe.src;
+            
+            // 暫停影片
+            iframe.src = videoUrl.replace('autoplay=1', 'autoplay=0');
+            
+            // 暫停背景音樂
+            ambience.pause();
+            
+            // 清除當前播放影片
+            if (currentPlayingVideo === iframe) {
+                currentPlayingVideo = null;
+            }
+        }
+        
+        function stopFridayVideo() {
+            const iframe = document.querySelector('#friday .video-container iframe');
+            const videoUrl = iframe.src;
+            
+            // 停止影片
+            iframe.src = videoUrl.replace('autoplay=1', 'autoplay=0');
+            
+            // 停止背景音樂
+            stopAmbience();
+            
+            // 清除當前播放影片
+            if (currentPlayingVideo === iframe) {
+                currentPlayingVideo = null;
+            }
+        }
+
+        // 頁面加載完成後初始化
+        window.onload = function() {
+            initAudio();
+            showStory(currentStoryId, 'forest');
+            createStars();
+            
+            // 添加音樂控制功能
+            document.querySelector('.music-control').addEventListener('click', function() {
+                isMusicPlaying = !isMusicPlaying;
+                if (isMusicPlaying) {
+                    playAmbience(currentAmbience);
+                    this.innerHTML = '<i class="fas fa-volume-up"></i>';
+                } else {
+                    stopAmbience();
+                    this.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                }
+            });
+            
+            // 添加翻頁功能
+            document.querySelector('.prev-page').addEventListener('click', function() {
+                const stories = ['story1', 'story2', 'story3', 'family', 'elderly', 'friday'];
+                const currentIndex = stories.indexOf(currentStoryId);
+                const prevIndex = (currentIndex - 1 + stories.length) % stories.length;
+                const ambienceType = prevIndex === 1 ? 'cloud' : 
+                                     prevIndex === 3 ? 'family' : 
+                                     prevIndex === 4 ? 'elderly' : 
+                                     prevIndex === 5 ? 'friday' : 'forest';
+                showStory(stories[prevIndex], ambienceType);
+            });
+            
+            document.querySelector('.next-page').addEventListener('click', function() {
+                const stories = ['story1', 'story2', 'story3', 'family', 'elderly', 'friday'];
+                const currentIndex = stories.indexOf(currentStoryId);
+                const nextIndex = (currentIndex + 1) % stories.length;
+                const ambienceType = nextIndex === 1 ? 'cloud' : 
+                                     nextIndex === 3 ? 'family' : 
+                                     nextIndex === 4 ? 'elderly' : 
+                                     nextIndex === 5 ? 'friday' : 'forest';
+                showStory(stories[nextIndex], ambienceType);
+            });
+            
+            // 添加浮動動物點擊功能
+            document.querySelectorAll('.floating-animal').forEach((animal, index) => {
+                animal.addEventListener('click', function() {
+                    const stories = ['story1', 'story2', 'story3', 'family', 'elderly', 'friday'];
+                    const ambienceType = index === 1 ? 'cloud' : 
+                                        index === 3 ? 'family' : 
+                                        index === 4 ? 'elderly' : 
+                                        index === 5 ? 'friday' : 'forest';
+                    showStory(stories[index], ambienceType);
+                });
+            });
+        };
+    </script>
+</body>
+</html>
