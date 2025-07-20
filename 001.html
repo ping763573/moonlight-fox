@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>感謝狀</title>
+    <!-- 引入 Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 Google Fonts - Noto Serif TC 和 Brush Script MT (假設為系統字體或類似手寫字體) -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Serif TC', serif;
+            background-color: #F8E8EE; /* 淡粉紅色背景 */
+            overflow-y: auto; /* 允許垂直滾動 */
+            overflow-x: hidden; /* 防止水平滾動 */
+            position: relative; /* 為偽元素定位提供參考 */
+            z-index: 1; /* 確保 body 內容在背景之上 */
+            display: flex; /* 使用 flexbox 居中內容 */
+            flex-direction: column;
+            align-items: center; /* 水平居中 */
+            justify-content: flex-start; /* 將內容從頂部開始排列 */
+            min-height: 100vh; /* 確保佔滿整個視窗高度 */
+            padding: 1rem; /* 增加一些整體內邊距 */
+            padding-top: 2vh; /* 調整頂部內邊距，將內容向上推移 */
+        }
+
+        /* 使用偽元素來設定背景圖片並應用濾鏡，使其不影響文字內容 */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://ping763573.github.io/moonlight-fox/001.png');
+            background-size: cover; /* 覆蓋整個背景 */
+            background-position: center; /* 圖片居中 */
+            background-repeat: no-repeat; /* 不重複圖片 */
+            filter: brightness(1.6) saturate(1.8); /* 增加亮度60%，飽和度80%，使其更亮麗鮮豔 */
+            z-index: -1; /* 將背景圖片放在內容之下 */
+        }
+        
+        /* 為了讓感謝狀框架恢復為長方形並放大，調整其外部容器的長寬比和最大寬度 */
+        .certificate-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 750px; /* 保持最大寬度 */
+            padding-bottom: 50%; /* 縮小高度，使其約為寬度的一半 */
+            margin-bottom: 2rem; /* 與按鈕區塊的間距 */
+        }
+
+        .certificate {
+            transition: transform 0.3s ease;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            position: absolute; /* 讓證書填滿其父容器 */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.5); /* 半透明白色背景 */
+            overflow: hidden;
+            display: flex; /* 使用 flexbox 居中內容 */
+            align-items: center;
+            justify-content: center;
+            padding: 2rem; /* 內部內容的內邊距 */
+            box-sizing: border-box; /* 確保內邊距不增加元素總尺寸 */
+        }
+        
+        .certificate:hover {
+            transform: rotate3d(1, 1, 0, 5deg);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); 
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            opacity: 0;
+            animation: fall linear forwards;
+        }
+        
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(calc(100vh + 100px)) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .seal {
+            transition: transform 0.3s ease;
+        }
+        
+        .certificate:hover .seal {
+            transform: rotate(15deg);
+        }
+        
+        .signature {
+            font-family: 'Brush Script MT', cursive; /* 使用手寫字體 */
+        }
+
+        /* 裝飾貼紙樣式 */
+        .sticker {
+            position: absolute;
+            z-index: 2; /* 確保貼紙在背景和證書內容之上 */
+            opacity: 0.8;
+        }
+        .sticker-top-left { top: -20px; left: -20px; transform: rotate(-15deg); }
+        .sticker-top-right { top: -20px; right: -20px; transform: rotate(15deg); }
+        .sticker-bottom-left { bottom: -20px; left: -20px; transform: rotate(15deg); }
+        .sticker-bottom-right { bottom: -20px; right: -20px; transform: rotate(-15deg); }
+    </style>
+</head>
+<body>
+    <!-- 感謝狀的方正框架容器 -->
+    <div class="certificate-wrapper">
+        <!-- SVG 裝飾貼紙 -->
+        <div class="sticker sticker-top-left">
+            <svg width="60" height="60" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <path d="M50 0 L61.8 35.3 L100 38.2 L70.9 61.8 L79.1 100 L50 82.7 L20.9 100 L29.1 61.8 L0 38.2 L38.2 35.3 Z" fill="#FFD700" stroke="#DAA520" stroke-width="2"/>
+            </svg>
+        </div>
+        <div class="sticker sticker-top-right">
+            <svg width="60" height="60" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <path d="M50 0 L61.8 35.3 L100 38.2 L70.9 61.8 L79.1 100 L50 82.7 L20.9 100 L29.1 61.8 L0 38.2 L38.2 35.3 Z" fill="#FFD700" stroke="#DAA520" stroke-width="2"/>
+            </svg>
+        </div>
+        <div class="sticker sticker-bottom-left">
+            <svg width="60" height="60" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <path d="M50 0 L61.8 35.3 L100 38.2 L70.9 61.8 L79.1 100 L50 82.7 L20.9 100 L29.1 61.8 L0 38.2 L38.2 35.3 Z" fill="#FFD700" stroke="#DAA520" stroke-width="2"/>
+            </svg>
+        </div>
+        <div class="sticker sticker-bottom-right">
+            <svg width="60" height="60" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <path d="M50 0 L61.8 35.3 L100 38.2 L70.9 61.8 L79.1 100 L50 82.7 L20.9 100 L29.1 61.8 L0 38.2 L38.2 35.3 Z" fill="#FFD700" stroke="#DAA520" stroke-width="2"/>
+            </svg>
+        </div>
+
+        <div id="certificate" class="certificate">
+            <div class="text-center relative z-10">
+                <div class="text-amber-800 text-xl md:text-3xl font-bold mb-2">感謝狀</div>
+                <div class="text-amber-700 text-lg md:text-xl mb-8">Certificate of Appreciation</div>
+                
+                <div class="mb-8">
+                    <p class="text-gray-700 text-lg md:text-xl mb-4">特此感謝</p>
+                    <h1 class="text-2xl md:text-4xl font-bold text-amber-900 mb-4">李欣樺老師</h1>
+                    <p class="text-gray-700 text-lg md:text-xl mb-6">在一學期間的辛勤教導作與卓越貢獻</p>
+                    <p class="text-gray-700 text-lg md:text-xl">感謝您讓114年春季人工智慧AI影像創作受益良多，<br>您的專業與熱忱是同學學習的關鍵</p>
+                </div>
+                
+                <div class="flex justify-between items-end mt-12">
+                    <div class="text-left">
+                        <div class="signature text-2xl text-amber-800">114年春季人工智慧AI影像創作</div>
+                        <div class="text-gray-600 text-sm border-t border-gray-400 pt-1">全體同學</div>
+                    </div>
+                    
+                    <div class="seal w-24 h-24 md:w-32 md:h-32">
+                        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="50" cy="50" r="45" fill="#8B4513" opacity="0.2"/>
+                            <circle cx="50" cy="50" r="40" fill="none" stroke="#8B4513" stroke-width="2"/>
+                            <path d="M50,10 L53,20 L63,20 L55,27 L58,37 L50,31 L42,37 L45,27 L37,20 L47,20 Z" fill="#8B4513"/>
+                            <path d="M50,63 L53,73 L63,73 L55,80 L58,90 L50,84 L42,90 L45,80 L37,73 L47,73 Z" fill="#8B4513"/>
+                            <path d="M10,50 L20,53 L20,63 L27,55 L37,58 L31,50 L37,42 L27,45 L20,37 L20,47 Z" fill="#8B4513"/>
+                            <path d="M63,50 L73,53 L73,63 L80,55 L90,58 L84,50 L90,42 L80,45 L73,37 L73,47 Z" fill="#8B4513"/>
+                            <text x="50" y="53" text-anchor="middle" font-size="10" font-weight="bold" fill="#8B4513">感謝</text>
+                        </svg>
+                    </div>
+                    
+                    <div class="text-right">
+                        <div class="text-amber-800 text-xl">2025年07月19日</div>
+                        <div class="text-gray-600 text-sm border-t border-gray-400 pt-1">日期</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flex space-x-4 mt-8">
+        <button id="fullscreenBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full transition-all transform hover:scale-105 shadow-lg">
+            切換全螢幕
+        </button>
+        <button id="confettiBtn" class="bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-6 rounded-full transition-all transform hover:scale-105 shadow-lg">
+            放出慶祝彩紙！
+        </button>
+    </div>
+
+<script>
+    // 彩紙顏色
+    const colors = [
+        '#FFC107', '#FF9800', '#FF5722', 
+        '#E91E63', '#9C27B0', '#673AB7', 
+        '#3F51B5', '#2196F3', '#03A9F4', 
+        '#00BCD4', '#009688', '#4CAF50'
+    ];
+    
+    // 彩紙形狀
+    const shapes = [
+        'square', 'circle', 'triangle', 'rect'
+    ];
+    
+    // 創建彩紙元素
+    function createConfetti() {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        
+        const shape = shapes[Math.floor(Math.random() * shapes.length)];
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        
+        confetti.style.backgroundColor = color;
+        confetti.style.left = Math.random() * 100 + 'vw';
+        
+        // 設定不同形狀
+        if (shape === 'circle') {
+            confetti.style.borderRadius = '50%';
+        } else if (shape === 'triangle') {
+            confetti.style.width = '0';
+            confetti.style.height = '0';
+            confetti.style.backgroundColor = 'transparent';
+            confetti.style.borderLeft = '5px solid transparent';
+            confetti.style.borderRight = '5px solid transparent';
+            confetti.style.borderBottom = '10px solid ' + color;
+        } else if (shape === 'rect') {
+            confetti.style.width = '7px';
+            confetti.style.height = '15px';
+        }
+        
+        // 隨機大小
+        const size = Math.random() * 10 + 5;
+        if (shape !== 'triangle') {
+            confetti.style.width = size + 'px';
+            confetti.style.height = size + 'px';
+        }
+        
+        // 隨機動畫時間
+        const animationDuration = Math.random() * 3 + 2;
+        confetti.style.animationDuration = animationDuration + 's';
+        
+        document.body.appendChild(confetti);
+        
+        // 動畫結束後移除彩紙
+        setTimeout(() => {
+            confetti.remove();
+        }, animationDuration * 1000);
+    }
+    
+    // 彩紙爆發
+    function confettiBurst(count = 100) {
+        for (let i = 0; i < count; i++) {
+            // 延遲創建彩紙，使其看起來更自然
+            setTimeout(createConfetti, Math.random() * 1000);
+        }
+    }
+    
+    // 點擊按鈕時觸發彩紙
+    document.getElementById('confettiBtn').addEventListener('click', () => {
+        confettiBurst();
+    });
+    
+    // 頁面載入時自動觸發一些彩紙
+    window.addEventListener('load', () => {
+        confettiBurst(30);
+    });
+    
+    // 滑鼠懸停在證書上時觸發少量彩紙
+    document.getElementById('certificate').addEventListener('mouseenter', () => {
+        confettiBurst(10);
+    });
+
+    // 全螢幕功能
+    const fullscreenBtn = document.getElementById('fullscreenBtn');
+
+    function toggleFullscreen() {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(err => {
+                console.error(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+            });
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+        }
+    }
+
+    fullscreenBtn.addEventListener('click', toggleFullscreen);
+
+    // 頁面載入時自動進入全螢幕
+    window.addEventListener('load', () => {
+        // 在大多數現代瀏覽器中，自動進入全螢幕需要用戶互動。
+        // 這裡僅為演示目的嘗試自動進入全螢幕。
+        // 實際應用中，建議讓用戶點擊按鈕觸發。
+        // toggleFullscreen(); 
+    });
+</script>
+</body>
+</html>
